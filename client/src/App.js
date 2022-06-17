@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import Web3 from 'web3';
 import './App.css';
 
 function App() {
