@@ -1,11 +1,18 @@
-import { useState } from "react";
 import makeBlockie from 'ethereum-blockies-base64';
 
-function Navbar(props) {
+async function connectWallet() {
+  await window.ethereum.request({ method: 'eth_requestAccounts' });
+}
 
-  async function connectWallet() {
-    await window.ethereum.request({ method: 'eth_requestAccounts' });
+function Navbar(props) {
+  let button;
+  if (props.isConnected) {
+    button = <WalletConnectedButton />;
   }
+  else {
+    button = <ConnectWalletButton />;
+  }
+
 
   return (
     <div className="fixed top-0 h-12 w-screen m-0 flex flex-row justify-between items-center bg-gray-800">
@@ -13,12 +20,7 @@ function Navbar(props) {
         blockchain-academic-certificates
       </h1>
       <div className="flex flex-row items-center h-full">
-        <button
-          onClick={connectWallet}
-          className="mr-4 px-2 py-1 text-slate-200 font-bold bg-blue-500 rounded-full hover:bg-blue-700"
-          >
-          Connect Wallet
-        </button>
+        {button}
         {props.isConnected &&
           <a 
             href={"https://etherscan.io/address/" + props.account}
@@ -34,6 +36,29 @@ function Navbar(props) {
         }
       </div>
     </div>
+  );
+}
+
+function WalletConnectedButton() {
+  return (
+    <button
+      className="mr-4 px-2 py-1 text-slate-200 font-bold bg-green-700 rounded-full"
+      disabled
+    >
+      Wallet Connected
+    </button>
+
+  );
+}
+
+function ConnectWalletButton() {
+  return (
+    <button
+      onClick={connectWallet}
+      className="mr-4 px-2 py-1 text-slate-200 font-bold bg-blue-500 rounded-full hover:bg-blue-700"
+      >
+      Connect Wallet
+    </button>
   );
 }
 
