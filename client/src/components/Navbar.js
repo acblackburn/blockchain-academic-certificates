@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Web3 from 'web3';
+import makeBlockie from 'ethereum-blockies-base64';
 
 function Navbar() {
 
@@ -18,7 +18,7 @@ function Navbar() {
       <h1 className="ml-4 text-slate-200 font-bold">
         blockchain-academic-credentials
       </h1>
-      <div className="flex flex-row items-center">
+      <div className="flex flex-row items-center h-full">
         <button
           onClick={getAccount}
           className="mr-4 px-2 py-1 text-slate-200 font-bold bg-blue-500 rounded-full hover:bg-blue-700"
@@ -26,11 +26,18 @@ function Navbar() {
           Connect Wallet
         </button>
         {isConnected &&
-          <h1 className="mr-4 text-slate-200 font-bold">
-            {account}
-          </h1>
+          <a 
+            href={"https://etherscan.io/address/" + account}
+            className="mr-4 text-slate-200 font-bold hover:underline"
+            >
+            {account.substring(0,5)}...{account.substring(38.42)}
+          </a>
         }
-    
+        {isConnected &&
+        <div className="h-full mr-2 py-1">
+          <img src={makeBlockie(account)} className="h-full rounded-md" />
+        </div>
+        }
       </div>
     </div>
   );
