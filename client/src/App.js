@@ -5,14 +5,32 @@ import Navbar from './components/Navbar';
 
 function App() {
 
-  // useEffect (() => {
-  //   const accounts = window.ethereum.request({ method: 'eth_requestAccounts' });
-  //   const account = accounts[0];
-  // });
+  const [account, setAccount] = useState(0);
+  const [isConnected, setConnected] = useState(false);
+
+  useEffect (() => {
+    // updates state every time there is a change to the account
+    function handleAccountsChanged(accounts) {
+      setAccount(accounts[0]);
+      if (!accounts[0]) {
+        setConnected(false);
+      }
+      else {
+        setConnected(true);
+      }
+    }
+
+    window.ethereum.on('accountsChanged', handleAccountsChanged);
+
+    // cleanup once component unmounts
+    return function cleanup() {
+      window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
+    }
+  });
 
   return (
     <div className="flex flex-col">
-      <Navbar/>
+      <Navbar account={account} isConnected={isConnected} />
     </div>
   );
 }
