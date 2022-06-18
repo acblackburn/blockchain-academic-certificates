@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Web3 from 'web3';
 import './App.css';
+import Navbar from './components/Navbar';
 
 function App() {
 
@@ -10,10 +11,8 @@ function App() {
   // });
 
   return (
-    <div className="App">
-      <h1 className="text-3xl font-bold underline">
-        Blockchain Academic Credentials
-      </h1>
+    <div className="flex flex-col">
+      <Navbar/>
     </div>
   );
 }
