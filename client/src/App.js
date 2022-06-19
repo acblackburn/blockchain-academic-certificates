@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import Web3 from 'web3';
 import './App.css';
 import Navbar from './components/Navbar';
 
 function App() {
-
-  const [account, setAccount] = useState(0);
-  const [isConnected, setConnected] = useState(false);
+  const [account, setAccount] = useState(window.ethereum.selectedAddress);
+  const [isConnected, setConnected] = useState(account != null);
 
   useEffect (() => {
     // updates state every time there is a change to the account
