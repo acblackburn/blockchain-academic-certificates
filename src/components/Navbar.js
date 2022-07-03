@@ -31,7 +31,7 @@ function Navbar(props) {
         }
         {props.isConnected &&
         <div className="h-full mr-2 py-1">
-          <img src={makeBlockie(props.account)} className="h-full rounded-md" />
+          <img src={makeBlockie(props.account)} className="h-full rounded-md" alt="account blockie" />
         </div>
         }
       </div>
