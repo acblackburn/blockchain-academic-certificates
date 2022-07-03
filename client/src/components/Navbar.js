@@ -15,7 +15,7 @@ function Navbar(props) {
 
 
   return (
-    <div className="fixed top-0 h-12 w-screen m-0 flex flex-row justify-between items-center bg-gray-800">
+    <div className="top-0 h-12 w-screen m-0 flex flex-row justify-between items-center bg-gray-800">
       <h1 className="ml-4 text-slate-200 font-bold">
         blockchain-academic-certificates
       </h1>

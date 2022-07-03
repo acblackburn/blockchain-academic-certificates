@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import Navbar from './components/Navbar';
+import MerkleTreeDisplay from './components/MerkleTree';
 
 function App() {
   const [account, setAccount] = useState(window.ethereum.selectedAddress);
@@ -29,6 +30,7 @@ function App() {
   return (
     <div className="flex flex-col">
       <Navbar account={account} isConnected={isConnected} />
+      <MerkleTreeDisplay />
     </div>
   );
 }
