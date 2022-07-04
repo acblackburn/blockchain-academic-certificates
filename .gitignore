@@ -8,8 +8,11 @@
 # testing
 /coverage
 
-# production (also ignores truffle build directory)
+# production
 /build
+
+# truffle build directory
+*/contracts_build
 
 # misc
 .DS_Store
