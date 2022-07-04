@@ -25,7 +25,7 @@ function App() {
     return function cleanup() {
       window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
     }
-  });
+  }, []);
 
   return (
     <div className="flex flex-col">
