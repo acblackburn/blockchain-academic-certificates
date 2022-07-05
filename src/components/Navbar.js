@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import makeBlockie from 'ethereum-blockies-base64';
 
 async function connectWallet() {
@@ -15,10 +16,16 @@ function Navbar(props) {
 
 
   return (
-    <div className="top-0 h-12 w-screen m-0 flex flex-row justify-between items-center bg-gray-800">
-      <h1 className="ml-4 text-slate-200 font-bold">
+    <nav className="top-0 h-12 w-screen m-0 flex flex-row justify-between items-center bg-gray-800">
+      <Link to="/" className="ml-4 text-slate-200 font-bold">
         blockchain-academic-certificates
-      </h1>
+      </Link>
+      <Link to="/verify">
+        verify
+      </Link>
+      <Link to="/publish">
+        publish
+      </Link>
       <div className="flex flex-row items-center h-full">
         {button}
         {props.isConnected &&
@@ -35,7 +42,7 @@ function Navbar(props) {
         </div>
         }
       </div>
-    </div>
+    </nav>
   );
 }
 
