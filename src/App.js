@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Verify from './pages/Verify';
+import Publish from './pages/Publish';
 import Navbar from './components/Navbar';
 import MerkleTreeDisplay from './components/MerkleTree';
 
@@ -42,14 +44,6 @@ function App() {
 
 function Home(props) {
   return <h2>Home</h2>
-}
-
-function Verify(props) {
-  return <h2>Verify</h2>
-}
-
-function Publish(props) {
-  return <h2>Publish</h2>
 }
 
 export default App;
