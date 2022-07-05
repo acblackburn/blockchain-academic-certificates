@@ -16,16 +16,18 @@ function Navbar(props) {
 
 
   return (
-    <nav className="top-0 h-12 w-screen m-0 flex flex-row justify-between items-center bg-gray-800">
-      <Link to="/" className="ml-4 text-slate-200 font-bold">
-        blockchain-academic-certificates
-      </Link>
-      <Link to="/verify">
-        verify
-      </Link>
-      <Link to="/publish">
-        publish
-      </Link>
+    <div className="top-0 h-12 w-screen m-0 flex flex-row justify-between items-center bg-gray-800">
+      <nav>
+        <Link to="/" className="ml-4 text-slate-200 font-bold">
+          blockchain-academic-certificates
+        </Link>
+        <Link to="/verify" className="ml-4 text-slate-200 font-bold">
+          verify
+        </Link>
+        <Link to="/publish" className="ml-4 text-slate-200 font-bold">
+          publish
+        </Link>
+      </nav>
       <div className="flex flex-row items-center h-full">
         {button}
         {props.isConnected &&
@@ -42,7 +44,7 @@ function Navbar(props) {
         </div>
         }
       </div>
-    </nav>
+    </div>
   );
 }
 

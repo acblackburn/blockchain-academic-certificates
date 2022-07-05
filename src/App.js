@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Verify from './pages/Verify';
 import Publish from './pages/Publish';
 import Navbar from './components/Navbar';
-import MerkleTreeDisplay from './components/MerkleTree';
 
 function App() {
   const [account, setAccount] = useState(window.ethereum.selectedAddress);
@@ -21,6 +20,7 @@ function App() {
       }
     }
 
+    // mount account change event listener
     window.ethereum.on('accountsChanged', handleAccountsChanged);
 
     // cleanup once component unmounts
@@ -37,7 +37,6 @@ function App() {
         <Route path="/publish" element={<Publish />} />
         <Route path="/" element={<Home />} />
       </Routes>
-      {/* <MerkleTreeDisplay /> */}
     </BrowserRouter>
   );
 }
