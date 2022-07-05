@@ -30,14 +30,16 @@ function App() {
   }, []);
 
   return (
-    <BrowserRouter className="flex flex-col">
-      <Navbar account={account} isConnected={isConnected} />
-      <Routes>
-        <Route path="/verify" element={<Verify />} />
-        <Route path="/publish" element={<Publish />} />
-        <Route path="/" element={<Home />} />
-      </Routes>
-    </BrowserRouter>
+    <div class="bg-slate-200 h-screen">
+      <BrowserRouter>
+        <Navbar account={account} isConnected={isConnected} />
+        <Routes>
+          <Route path="/verify" element={<Verify />} />
+          <Route path="/publish" element={<Publish />} />
+          <Route path="/" element={<Home />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
 }
 
