@@ -16,7 +16,7 @@ function Navbar(props) {
 
 
   return (
-    <div className="top-0 h-12 w-screen m-0 flex flex-row justify-between items-center bg-gray-800">
+    <div className="top-0 h-16 w-screen m-0 flex flex-row justify-between items-center bg-gray-800">
       <nav>
         <Link to="/" className="ml-4 text-slate-200 font-bold">
           blockchain-academic-certificates
@@ -39,7 +39,7 @@ function Navbar(props) {
           </a>
         }
         {props.isConnected &&
-        <div className="h-full mr-2 py-1">
+        <div className="h-full mr-2 py-2">
           <img src={makeBlockie(props.account)} className="h-full rounded-md" alt="account blockie" />
         </div>
         }
