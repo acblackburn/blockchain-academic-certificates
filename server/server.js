@@ -10,7 +10,7 @@ app.get('/hashes', (req, res) => {
   res.json(hashes);
 });
 
-app.post('/hashes', (req, res) => {
+app.post('/hash', (req, res) => {
   const hash = req.body;
 
   console.log(hash);

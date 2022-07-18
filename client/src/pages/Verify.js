@@ -28,6 +28,10 @@ function Verify(props) {
       setContract(new web3.eth.Contract(VerifyCertificate.abi, networkData.address));
     }
     
+    fetch("/hashes")
+      .then((res) => res.json())
+      .then((data) => console.log(data));
+
     // load merkleTree data
     const leaves = ['a', 'b', 'c', 'd', 'e'].map(leaf => keccak256(leaf));
     setMerkleTree(new MerkleTree(leaves, keccak256));
