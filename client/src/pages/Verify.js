@@ -30,11 +30,10 @@ function Verify(props) {
     
     fetch("/hashes")
       .then((res) => res.json())
-      .then((data) => console.log(data));
-
-    // load merkleTree data
-    const leaves = ['a', 'b', 'c', 'd', 'e'].map(leaf => keccak256(leaf));
-    setMerkleTree(new MerkleTree(leaves, keccak256));
+      .then((data) => {
+        setMerkleTree(new MerkleTree(data, keccak256));
+        console.log(merkleTree);
+      });
 
     loadContract();
   }, [])
@@ -60,7 +59,6 @@ function Verify(props) {
         </div>}
       </form>
     </div>
-    
   );
 }
 
