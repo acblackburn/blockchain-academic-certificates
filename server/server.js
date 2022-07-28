@@ -3,7 +3,7 @@ const keccak256 = require('keccak256')
 
 const PORT = 3001;
 const app = express();
-app.use(express.text());
+app.use(express.json());
 
 let hashes = [];
 
@@ -13,11 +13,8 @@ app.get('/hashes', (req, res) => {
 
 app.post('/hash', (req, res) => {
   const hash = req.body;
-
-  console.log(hash + " -> " + keccak256(hash));
-  hashes.push(String(keccak256(hash)));
-
-  res.send("New hash has been added to the database");
+  console.log(hash);
+  hashes.push(hash);
 });
 
 app.listen(PORT, () => {

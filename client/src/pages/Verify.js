@@ -14,6 +14,7 @@ function Verify(props) {
   const verifyData = async (e) => {
     e.preventDefault();
     const root = merkleTree.getHexRoot();
+    console.log(root.toString('hex'));
     const leaf = keccak256(data);
     const proof = merkleTree.getHexProof(leaf);
     setVerifiedStatus(await contract.methods.verify(proof, root, leaf).call());
@@ -30,9 +31,10 @@ function Verify(props) {
     
     fetch("/hashes")
       .then((res) => res.json())
-      .then((data) => {
-        setMerkleTree(new MerkleTree(data, keccak256));
-        console.log(merkleTree);
+      .then((leaves) => {
+        leaves = leaves.map(leaf => Buffer.from(leaf));
+        console.log(leaves);
+        setMerkleTree(new MerkleTree(leaves, keccak256, { sort: true }));
       });
 
     loadContract();

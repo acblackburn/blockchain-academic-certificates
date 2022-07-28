@@ -4,17 +4,23 @@ import keccak256 from 'keccak256';
 
 function Publish(props) {
 
-  const [data, setData] = useState('');
+  const [data, setData] = useState("");
   const [publishStatus, setPublishStatus] = useState(0);
 
   const submitData = async (e) => {
     e.preventDefault();
-    fetch('/hash', {method: 'POST', body: data})
-      .then((res) => {
-        console.log(res);
-        setData('');
-        return res.json();
-      });
+    fetch('/hash', { 
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(keccak256(data)),
+    })
+    .then((res) => {
+      console.log(res.body);
+      setData('');
+      return res.json();
+    });
   }
 
   return (
