@@ -12,9 +12,9 @@ app.get('/hashes', (req, res) => {
 });
 
 app.post('/hash', (req, res) => {
-  const hash = req.body;
-  console.log(hash);
-  hashes.push(hash);
+  const hash = Buffer.from(req.body);
+  const hash_string = hash.toString('hex');
+  hashes.push(hash_string);
 });
 
 app.listen(PORT, () => {
