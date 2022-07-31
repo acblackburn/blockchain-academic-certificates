@@ -13,7 +13,7 @@ node_modules
 /build
 
 # truffle build directory
-*/contracts_build
+*/*/contracts_build/
 
 # misc
 .DS_Store

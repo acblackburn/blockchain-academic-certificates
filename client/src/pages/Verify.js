@@ -13,10 +13,11 @@ function Verify(props) {
 
   const verifyData = async (e) => {
     e.preventDefault();
-    const root = merkleTree.getHexRoot();
     const leaf = keccak256(data);
+    const root = merkleTree.getHexRoot();
+    console.log(root.toString('hex'));
     const proof = merkleTree.getHexProof(leaf);
-    setVerifiedStatus(await contract.methods.verify(proof, root, leaf).call());
+    setVerifiedStatus(await contract.methods.verify(proof, leaf).call());
   }
 
   const web3 = new Web3(Web3.givenProvider);

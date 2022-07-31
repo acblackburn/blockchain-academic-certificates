@@ -1,14 +1,32 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import keccak256 from 'keccak256';
+import Web3 from 'web3';
+import MerkleTree from 'merkletreejs'
+import VerifyCertificate from '../contracts_build/contracts/VerifyCertificate.json';
 
 function Publish(props) {
 
+  const [contract, setContract] = useState(0);
+  const [merkleTree, setMerkleTree] = useState(0);
   const [data, setData] = useState("");
   const [publishStatus, setPublishStatus] = useState(0);
 
   const submitData = async (e) => {
     e.preventDefault();
+
+    fetch("/hashes")
+      .then((res) => res.json())
+      .then((leaves) => {
+        leaves = leaves.map(leaf => Buffer.from(leaf, 'hex'));
+        leaves.push(keccak256(data));
+        setMerkleTree(new MerkleTree(leaves, keccak256, { sort: true }));
+      });
+
+    const newRoot = merkleTree.getHexRoot();
+    console.log(newRoot);
+    contract.methods.setRoot(newRoot).send();
+
     fetch('/hash', { 
       method: 'POST',
       headers: {
@@ -21,7 +39,20 @@ function Publish(props) {
       setData('');
       return res.json();
     });
+
   }
+
+  const web3 = new Web3(Web3.givenProvider);
+
+  useEffect(() => {
+    const loadContract = async () => {
+      const networkId = await web3.eth.net.getId();
+      const networkData = VerifyCertificate.networks[networkId];
+      setContract(new web3.eth.Contract(VerifyCertificate.abi, networkData.address, { from: window.ethereum.selectedAddress }));
+    }
+
+    loadContract();
+  }, [])
 
   return (
     <div class="my-20 flex justify-center w-full">

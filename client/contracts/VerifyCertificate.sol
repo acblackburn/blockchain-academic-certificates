@@ -5,12 +5,18 @@ import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
 contract VerifyCertificate {
 
+  bytes32 root;
+
   function verify(
     bytes32[] memory proof,
-    bytes32 root,
     bytes32 leaf
-    ) public pure returns (bool) {
-    return MerkleProof.verify(proof, root, leaf);
+    ) public view returns (bool) {
+    bytes32 _root = root;
+    return MerkleProof.verify(proof, _root, leaf);
+  }
+
+  function setRoot(bytes32 _root) public {
+    root = _root;
   }
 
 }
