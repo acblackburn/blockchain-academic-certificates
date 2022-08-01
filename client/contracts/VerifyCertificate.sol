@@ -11,8 +11,7 @@ contract VerifyCertificate {
     bytes32[] memory proof,
     bytes32 leaf
     ) public view returns (bool) {
-    bytes32 _root = root;
-    return MerkleProof.verify(proof, _root, leaf);
+    return MerkleProof.verify(proof, root, leaf);
   }
 
   function setRoot(bytes32 _root) public {
