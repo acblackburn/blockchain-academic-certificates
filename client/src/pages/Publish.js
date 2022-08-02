@@ -12,7 +12,6 @@ function Publish(props) {
   const [merkleTree, setMerkleTree] = useState(0);
   const [data, setData] = useState("");
   const [file, setFile] = useState(null);
-  const [url, setUrl] = useState([]);
   const [publishStatus, setPublishStatus] = useState(0);
 
   const web3 = new Web3(Web3.givenProvider);
@@ -30,15 +29,15 @@ function Publish(props) {
 
   const handleFileUpload = async (e) => {
     e.preventDefault();
-
     try {
       const fileAdded = await client.add(file);
-      console.log("Added file:", fileAdded.path, fileAdded.cid);
+      console.log("Added file:", fileAdded.path);
+      const CIDhash = keccak256(fileAdded.path).toString('hex');
+      console.log(CIDhash);
     } catch (error) {
       console.log(error.message);
     }
   }
-
 
   const submitData = async (e) => {
     e.preventDefault();
