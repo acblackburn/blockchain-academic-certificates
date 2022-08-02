@@ -32,8 +32,26 @@ function Publish(props) {
     try {
       const fileAdded = await client.add(file);
       console.log("Added file:", fileAdded.path);
-      const CIDhash = keccak256(fileAdded.path).toString('hex');
-      console.log(CIDhash);
+      
+      fetch("/CIDs")
+      .then((res) => res.json())
+      .then((CIDs) => {
+        const leaves = CIDs.map(CID => keccak256(CID));
+        leaves.push(keccak256(fileAdded.path));
+        setMerkleTree(new MerkleTree(leaves, keccak256, { sort: true }));
+      });
+
+      const newRoot = merkleTree.getHexRoot();
+      console.log(newRoot);
+      contract.methods.setRoot(newRoot).send();
+
+      fetch('/CID', { 
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({CID: fileAdded.path}),
+      })
     } catch (error) {
       console.log(error.message);
     }

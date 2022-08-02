@@ -5,16 +5,15 @@ const PORT = 3001;
 const app = express();
 app.use(express.json());
 
-let hashes = [];
+let CIDs = [];
 
-app.get('/hashes', (req, res) => {
-  res.json(hashes);
+app.get('/CIDs', (req, res) => {
+  res.json(CIDs);
 });
 
-app.post('/hash', (req, res) => {
-  const hash = Buffer.from(req.body);
-  const hash_string = hash.toString('hex');
-  hashes.push(hash_string);
+app.post('/CID', (req, res) => {
+  const newCID = req.body.CID;
+  CIDs.push(newCID);
 });
 
 app.listen(PORT, () => {

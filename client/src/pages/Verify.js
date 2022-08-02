@@ -33,7 +33,6 @@ function Verify(props) {
       const leaf = keccak256(fileCID);
       const proof = merkleTree.getHexProof(leaf);
       setVerifiedStatus(await contract.methods.verify(proof, leaf).call());
-      console.log(leaf);
     } catch (error) {
       console.log(error.message);
       return;
@@ -56,10 +55,10 @@ function Verify(props) {
       setContract(new web3.eth.Contract(VerifyCertificate.abi, networkData.address));
     }
     
-    fetch("/hashes")
+    fetch("/CIDs")
       .then((res) => res.json())
-      .then((leaves) => {
-        leaves = leaves.map(leaf => Buffer.from(leaf, 'hex'));
+      .then((CIDs) => {
+        const leaves = CIDs.map(CID => keccak256(CID));
         console.log(leaves);
         setMerkleTree(new MerkleTree(leaves, keccak256, { sort: true }));
       });
