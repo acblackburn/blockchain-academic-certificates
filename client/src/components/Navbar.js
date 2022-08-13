@@ -27,6 +27,9 @@ function Navbar(props) {
         <Link to="/publish" className="ml-4 text-slate-200 font-bold">
           publish
         </Link>
+        <Link to="/gun-test" className="ml-4 text-slate-200 font-bold">
+          gun-test
+        </Link>
       </nav>
       <div className="flex flex-row items-center h-full">
         {button}

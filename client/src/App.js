@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Verify from './pages/Verify';
 import Publish from './pages/Publish';
 import Navbar from './components/Navbar';
+import GunTest from './pages/GunTest';
 
 function App() {
   const [account, setAccount] = useState(window.ethereum.selectedAddress);
@@ -36,6 +37,7 @@ function App() {
         <Routes>
           <Route path="/verify" element={<Verify />} />
           <Route path="/publish" element={<Publish />} />
+          <Route path="/gun-test" element={<GunTest />} />
           <Route path="/" element={<Home />} />
         </Routes>
       </BrowserRouter>
