@@ -1,20 +1,12 @@
 const express = require("express");
+const Gun = require('gun');
 
 const PORT = 3001;
 const app = express();
-app.use(express.json());
+app.use(Gun.serve);
 
-let CIDs = [];
+const server = app.listen(PORT, () => {
+  console.log("Listening at: http://localhost:" + PORT + "/gun");
+})
 
-app.get('/CIDs', (req, res) => {
-  res.json(CIDs);
-});
-
-app.post('/CID', (req, res) => {
-  const newCID = req.body.CID;
-  CIDs.push(newCID);
-});
-
-app.listen(PORT, () => {
-  console.log(`Server listening on ${PORT}`);
-});
+Gun({ file: 'db/data', web: server });

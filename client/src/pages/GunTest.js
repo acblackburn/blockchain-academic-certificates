@@ -9,7 +9,7 @@ function GunTest(props) {
   const [CIDs, setCIDs] = useState([]);
   const fileInputRef = useRef("");
 
-  const gun = Gun();
+  const gun = Gun({peers: ['http://localhost:3001/gun']});
   const gunItems = gun.get('items');
 
   useEffect(() => {
