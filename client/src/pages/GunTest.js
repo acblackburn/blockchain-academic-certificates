@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import Gun from 'gun';
+import { MerkleTree } from 'merkletreejs';
 import keccak256 from 'keccak256';
 const Hash = require('ipfs-only-hash');
 
@@ -16,9 +17,10 @@ function GunTest(props) {
     // Get items from gun and add new items to items array in state
     gunItems.map().on((node, CID) => {
       if (node && !CIDs.includes(CID)) {
-        setCIDs(CIDs.concat(CID));
+        setCIDs(CIDs.concat(CID));  
       }
     });
+
   })
 
   const retrieveFile = (e) => {
@@ -35,7 +37,7 @@ function GunTest(props) {
     e.preventDefault();
     try {
       const fileCID = await Hash.of(file);
-      const newItem = gun.get(fileCID).put({studentAccout: "exampleStudentAccount", uploaderAccount: "exampleUploaderAccount"});
+      const newItem = gun.get(fileCID).put({studentAccount: "exampleStudentAccount", uploaderAccount: "exampleUploaderAccount"});
       gunItems.set(newItem);
       setFile(null);
       fileInputRef.current.value = "";
@@ -59,8 +61,14 @@ function GunTest(props) {
     }
   }
 
+  const getRoot = () => {
+    const tree = new MerkleTree(CIDs.map(CID => keccak256(CID)), keccak256, { sort: true});
+    return <h1>{tree.getHexRoot()}</h1>
+  }
+
   return (
     <div>
+      {getRoot()}
       <form class="w-3/5 flex flex-col justify-center bg-white shadow-md rounded px-8 py-8">
         <div class="flex justify-center">
           <input type="file" onChange={retrieveFile} ref={fileInputRef}
