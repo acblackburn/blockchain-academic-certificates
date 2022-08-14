@@ -22,12 +22,16 @@ function Verify(props) {
   const certificatesData = gun.get('certificatesData');
 
   useEffect(() => {
-    // Load all certificate CIDs from gunDB (gets updates in realtime)
-    certificatesData.map().on((node, CID) => {
+    // Load all certificate CIDs from gunDB
+    certificatesData.map().once((node, CID) => {
       if (node && !CIDs.includes(CID)) {
         setCIDs(CIDs.concat(CID));  
       }
     });
+
+    return () => {
+      certificatesData.off();
+    };
   })
 
   const retrieveFile = (e) => {
@@ -62,17 +66,15 @@ function Verify(props) {
 
       // Call verify method from the smart contract
       setVerifiedStatus(await contract.methods.verify(proof, leaf).call());
-
-      // Clear file input
-      fileInputRef.current.value = "";
     } catch (error) {
       console.log(error.message);
-      setSubmitDisabled(false);
     }
+    // Clear file input
+    fileInputRef.current.value = "";
   }
 
   return (
-    <div class="my-20 flex justify-center w-full">
+    <div class="my-20 flex justify-center w-full bg-slate-50">
       <form onSubmit={verifyFile} class="w-3/5 flex flex-col justify-center bg-white shadow-md rounded px-8 py-8">
         <div class="flex justify-center">
           <input type="file" onChange={retrieveFile} ref={fileInputRef} 

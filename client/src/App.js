@@ -25,13 +25,13 @@ function App() {
     window.ethereum.on('accountsChanged', handleAccountsChanged);
 
     // cleanup once component unmounts
-    return function cleanup() {
+    return () => {
       window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
-    }
-  }, []);
+    };
+  });
 
   return (
-    <div class="bg-slate-200 h-screen">
+    <div>
       <BrowserRouter>
         <Navbar account={account} isConnected={isConnected} />
         <Routes>

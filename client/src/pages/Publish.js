@@ -10,6 +10,7 @@ function Publish(props) {
 
   const [file, setFile] = useState(null);
   const [CIDs, setCIDs] = useState([]);
+  const [submitDisabled, setSubmitDisabled] = useState(true);
   const fileInputRef = useRef("");
   const [publishStatus, setPublishStatus] = useState(0);
 
@@ -34,12 +35,16 @@ function Publish(props) {
   const certificatesData = gun.get('certificatesData');
 
   useEffect(() => {
-    // Load all certificate CIDs from gunDB (gets updates in realtime)
-    certificatesData.map().on((node, CID) => {
+    // Load all certificate CIDs from gunDB
+    certificatesData.map().once((node, CID) => {
       if (node && !CIDs.includes(CID)) {
         setCIDs(CIDs.concat(CID));  
       }
     });
+
+    // return () => {
+    //   certificatesData.off();
+    // };
   })
 
   const retrieveFile = (e) => {
@@ -49,11 +54,13 @@ function Publish(props) {
     reader.readAsArrayBuffer(data);
     reader.onloadend = () => {
       setFile(Buffer(reader.result));
+      setSubmitDisabled(false);
     }
   }
 
   const handleFileUpload = async (e) => {
     e.preventDefault();
+    setSubmitDisabled(true);
     try {
       // Load VerifyCertificate solidity contract
       const networkId = await web3.eth.net.getId();
@@ -62,7 +69,6 @@ function Publish(props) {
 
       // Add uploaded file to IPFS
       const fileAdded = await client.add(file);
-      console.log("Added file:", fileAdded.path);
 
       if (CIDs.includes(fileAdded.path)) {
         alert("This certificate has already been published!");
@@ -70,25 +76,23 @@ function Publish(props) {
         // Hash all CIDs into leaves array and add the hashed CID of the new certificate
         const leaves = CIDs.map(CID => keccak256(CID));
         leaves.push(keccak256(fileAdded.path));
-        console.log(leaves);
 
         // Create merkle tree using leaves array
         const merkleTree = new MerkleTree(leaves, keccak256, { sort: true });
         
         // Get the new merkle root and call the set method from the smart contract to save to the blockchain
         const newRoot = merkleTree.getHexRoot();
-        console.log(newRoot);
         await contract.methods.setRoot(newRoot).send();
 
         // Add new certificate metadata to gunDB
         const newCertificate = gun.get(fileAdded.path).put({studentAccount: "exampleStudentAccount", uploaderAccount: "exampleUploaderAccount"});
         certificatesData.set(newCertificate);
       }
-      // Clear file input
-      fileInputRef.current.value = "";
     } catch (error) {
       console.log(error.message);
     }
+    // Clear file input
+    fileInputRef.current.value = "";
   }
 
   return (
@@ -98,7 +102,7 @@ function Publish(props) {
           <input type="file" onChange={retrieveFile} ref={fileInputRef}
           class="bg-gray-200 border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-indigo-600"
           />
-          <input type="submit" value="Publish" class="shadow bg-indigo-600 hover:bg-indigo-400 focus:shadow-outline focus:outline-none text-white font-bold mx-5 py-2 px-4 rounded" />
+          <input type="submit" value="Publish" disabled={submitDisabled} class="shadow bg-indigo-600 hover:bg-indigo-400 disabled:bg-indigo-400 focus:shadow-outline focus:outline-none text-white font-bold mx-5 py-2 px-4 rounded" />
         </div>
       </form>
     </div>
