@@ -1,4 +1,3 @@
-import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import Gun from 'gun';
 import keccak256 from 'keccak256';
