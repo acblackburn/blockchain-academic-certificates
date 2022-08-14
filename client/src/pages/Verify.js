@@ -10,6 +10,7 @@ function Verify(props) {
 
   const [file, setFile] = useState(null);
   const [CIDs, setCIDs] = useState([]);
+  const [submitDisabled, setSubmitDisabled] = useState(true);
   const [verifiedStatus, setVerifiedStatus] = useState(0);
   const fileInputRef = useRef("");
 
@@ -36,11 +37,13 @@ function Verify(props) {
     reader.readAsArrayBuffer(data);
     reader.onloadend = () => {
       setFile(Buffer(reader.result));
+      setSubmitDisabled(false);
     }
   }
 
   const verifyFile = async (e) => {
     e.preventDefault();
+    setSubmitDisabled(true);
     try {
       // Load VerifyCertificate solidity contract
       const networkId = await web3.eth.net.getId();
@@ -64,7 +67,7 @@ function Verify(props) {
       fileInputRef.current.value = "";
     } catch (error) {
       console.log(error.message);
-      return;
+      setSubmitDisabled(false);
     }
   }
 
@@ -75,7 +78,7 @@ function Verify(props) {
           <input type="file" onChange={retrieveFile} ref={fileInputRef} 
           class="bg-gray-200 border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-indigo-600"
           />
-          <input type="submit" value="Verify" class="shadow bg-indigo-600 hover:bg-indigo-400 focus:shadow-outline focus:outline-none text-white font-bold mx-5 py-2 px-4 rounded" />
+          <input type="submit" value="Verify" disabled={submitDisabled} class="shadow bg-indigo-600 hover:bg-indigo-400 disabled:bg-indigo-400 focus:shadow-outline focus:outline-none text-white font-bold mx-5 py-2 px-4 rounded" />
         </div>
         {verifiedStatus !== 0 &&
           <div>
