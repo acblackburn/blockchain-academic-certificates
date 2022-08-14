@@ -1,18 +1,32 @@
-import MerkleTree from 'merkletreejs'
+import { MerkleTree } from 'merkletreejs'
 import keccak256 from 'keccak256';
 import { useState, useEffect } from 'react';
+import Gun from 'gun';
 import Web3 from 'web3';
 import VerifyCertificate from '../contracts_build/contracts/VerifyCertificate.json';
 const Hash = require('ipfs-only-hash');
 
 function Verify(props) {
 
-  const [contract, setContract] = useState(0);
-  const [merkleTree, setMerkleTree] = useState(0);
   const [file, setFile] = useState(null);
+  const [CIDs, setCIDs] = useState([]);
   const [verifiedStatus, setVerifiedStatus] = useState(0);
 
+  // create ETh web3 object
   const web3 = new Web3(Web3.givenProvider);
+
+  // Init connection to gunDB with relay server and get certificatesData set
+  const gun = Gun({peers: ['http://localhost:3001/gun']});
+  const certificatesData = gun.get('certificatesData');
+
+  useEffect(() => {
+    // Load all certificate CIDs from gunDB (gets updates in realtime)
+    certificatesData.map().on((node, CID) => {
+      if (node && !CIDs.includes(CID)) {
+        setCIDs(CIDs.concat(CID));  
+      }
+    });
+  })
 
   const retrieveFile = (e) => {
     e.preventDefault();
@@ -27,32 +41,28 @@ function Verify(props) {
   const verifyFile = async (e) => {
     e.preventDefault();
     try {
+      // Load VerifyCertificate solidity contract
+      const networkId = await web3.eth.net.getId();
+      const networkData = VerifyCertificate.networks[networkId];
+      const contract = new web3.eth.Contract(VerifyCertificate.abi, networkData.address);
+
+      // Get CID of uploaded file and the CID hash
       const fileCID = await Hash.of(file);
       const leaf = keccak256(fileCID);
+
+      // Create a merkle tree using the CIDs
+      const merkleTree = new MerkleTree(CIDs.map(CID => keccak256(CID)), keccak256, { sort: true });
+
+      // Generate proof using new data and merkle tree
       const proof = merkleTree.getHexProof(leaf);
+
+      // Call verify method from the smart contract
       setVerifiedStatus(await contract.methods.verify(proof, leaf).call());
     } catch (error) {
       console.log(error.message);
       return;
     }
   }
-
-  useEffect(() => {
-    const loadContract = async () => {
-      const networkId = await web3.eth.net.getId();
-      const networkData = VerifyCertificate.networks[networkId];
-      setContract(new web3.eth.Contract(VerifyCertificate.abi, networkData.address));
-    }
-    
-    fetch("/CIDs")
-      .then((res) => res.json())
-      .then((CIDs) => {
-        const leaves = CIDs.map(CID => keccak256(CID));
-        setMerkleTree(new MerkleTree(leaves, keccak256, { sort: true }));
-      });
-
-    loadContract();
-  }, [])
 
   return (
     <div class="my-20 flex justify-center w-full">
