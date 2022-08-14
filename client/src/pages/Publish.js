@@ -41,10 +41,6 @@ function Publish(props) {
         setCIDs(CIDs.concat(CID));  
       }
     });
-
-    // return () => {
-    //   certificatesData.off();
-    // };
   })
 
   const retrieveFile = (e) => {
