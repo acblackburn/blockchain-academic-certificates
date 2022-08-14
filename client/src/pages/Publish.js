@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Gun from 'gun';
 import keccak256 from 'keccak256';
 import Web3 from 'web3';
@@ -11,6 +11,7 @@ function Publish(props) {
 
   const [file, setFile] = useState(null);
   const [CIDs, setCIDs] = useState([]);
+  const fileInputRef = useRef("");
   const [publishStatus, setPublishStatus] = useState(0);
 
   // create ETH web3 object
@@ -66,25 +67,26 @@ function Publish(props) {
 
       if (CIDs.includes(fileAdded.path)) {
         alert("This certificate has already been published!");
-        return;
+      } else {
+        // Hash all CIDs into leaves array and add the hashed CID of the new certificate
+        const leaves = CIDs.map(CID => keccak256(CID));
+        leaves.push(keccak256(fileAdded.path));
+        console.log(leaves);
+
+        // Create merkle tree using leaves array
+        const merkleTree = new MerkleTree(leaves, keccak256, { sort: true });
+        
+        // Get the new merkle root and call the set method from the smart contract to save to the blockchain
+        const newRoot = merkleTree.getHexRoot();
+        console.log(newRoot);
+        await contract.methods.setRoot(newRoot).send();
+
+        // Add new certificate metadata to gunDB
+        const newCertificate = gun.get(fileAdded.path).put({studentAccount: "exampleStudentAccount", uploaderAccount: "exampleUploaderAccount"});
+        certificatesData.set(newCertificate);
       }
-
-      // Hash all CIDs into leaves array and add the hashed CID of the new certificate
-      const leaves = CIDs.map(CID => keccak256(CID));
-      leaves.push(keccak256(fileAdded.path));
-      console.log(leaves);
-
-      // Create merkle tree using leaves array
-      const merkleTree = new MerkleTree(leaves, keccak256, { sort: true });
-      
-      // Get the new merkle root and call the set method from the smart contract to save to the blockchain
-      const newRoot = merkleTree.getHexRoot();
-      console.log(newRoot);
-      await contract.methods.setRoot(newRoot).send();
-
-      // Add new certificate metadata to gunDB
-      const newCertificate = gun.get(fileAdded.path).put({studentAccount: "exampleStudentAccount", uploaderAccount: "exampleUploaderAccount"});
-      certificatesData.set(newCertificate);
+      // Clear file input
+      fileInputRef.current.value = "";
     } catch (error) {
       console.log(error.message);
     }
@@ -94,7 +96,7 @@ function Publish(props) {
     <div class="my-20 flex justify-center w-full">
       <form onSubmit={handleFileUpload} class="w-3/5 flex flex-col justify-center bg-white shadow-md rounded px-8 py-8">
         <div class="flex justify-center">
-          <input type="file" onChange={retrieveFile} 
+          <input type="file" onChange={retrieveFile} ref={fileInputRef}
           class="bg-gray-200 border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-indigo-600"
           />
           <input type="submit" value="Publish" class="shadow bg-indigo-600 hover:bg-indigo-400 focus:shadow-outline focus:outline-none text-white font-bold mx-5 py-2 px-4 rounded" />
