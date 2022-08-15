@@ -3,7 +3,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Verify from './pages/Verify';
 import Publish from './pages/Publish';
 import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
 import GunTest from './pages/GunTest';
+import View from './pages/View';
 
 function App() {
   const [account, setAccount] = useState(window.ethereum.selectedAddress);
@@ -31,22 +33,41 @@ function App() {
   });
 
   return (
-    <div>
       <BrowserRouter>
-        <Navbar account={account} isConnected={isConnected} />
-        <Routes>
-          <Route path="/verify" element={<Verify />} />
-          <Route path="/publish" element={<Publish />} />
-          <Route path="/gun-test" element={<GunTest />} />
-          <Route path="/" element={<Home />} />
-        </Routes>
+        <div class="flex bg-slate-100">
+          <Sidebar />
+          <div class="flex-1">
+          <Navbar account={account} isConnected={isConnected} />
+          <Routes>
+            <Route path="/verify" element={<Verify />} />
+            <Route path="/publish" element={<Publish />} />
+            <Route path="/gun-test" element={<GunTest />} />
+            <Route path="/view" element={<View />} />
+            <Route path="/" element={<Home />} />
+          </Routes>
+          </div>
+        </div>
       </BrowserRouter>
-    </div>
   );
 }
 
 function Home(props) {
-  return <h2>Home</h2>
+  return (
+    <div>
+      <div class="h-96 p-10">
+        <h1 class="text-4xl">Top Content</h1>
+      </div>
+      <div class="h-96 bg-amber-400 p-10">
+        <h1 class="text-4xl">Middle Content</h1>
+      </div>
+      <div class="h-96 bg-green-400 p-10">
+        <h1 class="text-4xl">Middle Content</h1>
+      </div>
+      <div class="h-96 bg-indigo-400 p-10">
+        <h1 class="text-4xl">Last Content</h1>
+      </div>
+    </div>
+  );
 }
 
 export default App;

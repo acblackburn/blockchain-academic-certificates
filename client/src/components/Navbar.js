@@ -16,7 +16,7 @@ function Navbar(props) {
 
 
   return (
-    <div className="top-0 h-16 w-screen m-0 flex flex-row justify-between items-center bg-gray-800">
+    <div className="sticky w-full top-0 h-16 flex justify-between items-center bg-gray-800">
       <nav>
         <Link to="/" className="ml-4 text-slate-200 font-bold">
           blockchain-academic-certificates
@@ -29,6 +29,9 @@ function Navbar(props) {
         </Link>
         <Link to="/gun-test" className="ml-4 text-slate-200 font-bold">
           gun-test
+        </Link>
+        <Link to="/view" className="ml-4 text-slate-200 font-bold">
+          view
         </Link>
       </nav>
       <div className="flex flex-row items-center h-full">
