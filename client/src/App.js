@@ -7,6 +7,7 @@ import Topbar from './components/Topbar';
 import Sidebar from './components/Sidebar';
 import GunTest from './pages/GunTest';
 import View from './pages/View';
+import Help from './pages/Help';
 
 function App() {
   const [account, setAccount] = useState(window.ethereum.selectedAddress);
@@ -41,9 +42,10 @@ function App() {
           <Topbar account={account} isConnected={isConnected} />
           <Routes>
             <Route path="/verify" element={<Verify />} />
-            <Route path="/publish" element={<Publish />} />
+            <Route path="/publish" element={<Publish account={account} />} />
             <Route path="/gun-test" element={<GunTest />} />
-            <Route path="/view" element={<View />} />
+            <Route path="/view" element={<View account={account} />} />
+            <Route path="/help" element={<Help account={account} />} />
             <Route path="/" element={<Home />} />
           </Routes>
           </div>
