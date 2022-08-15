@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import Gun from 'gun';
-import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 
 function View(props) {
 
