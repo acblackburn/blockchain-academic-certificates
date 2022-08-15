@@ -1,11 +1,10 @@
-import { Link } from 'react-router-dom';
 import makeBlockie from 'ethereum-blockies-base64';
 
-async function connectWallet() {
+const connectWallet = async () => {
   await window.ethereum.request({ method: 'eth_requestAccounts' });
 }
 
-function Navbar(props) {
+const Topbar = (props) => {
   let button;
   if (props.isConnected) {
     button = <WalletConnectedButton />;
@@ -17,17 +16,15 @@ function Navbar(props) {
 
   return (
     <div className="sticky w-full top-0 h-20 flex justify-between items-center bg-white shadow">
-      <nav>
-        <Link to="/" className="ml-8 text-slate-200 font-bold">
-          blockchain-academic-certificates
-        </Link>
-      </nav>
+      <h1 className="ml-8 text-slate-500 font-bold">
+        blockchain-academic-certificates
+      </h1>
       <div className="flex flex-row items-center h-full">
         {button}
         {props.isConnected &&
           <a 
             href={"https://etherscan.io/address/" + props.account}
-            className="mr-4 text-slate-200 font-bold hover:underline"
+            className="mr-4 text-slate-500 font-bold hover:underline"
             >
             {props.account.substring(0,5)}...{props.account.substring(38.42)}
           </a>
@@ -42,10 +39,10 @@ function Navbar(props) {
   );
 }
 
-function WalletConnectedButton() {
+const WalletConnectedButton = () => {
   return (
     <button
-      className="mr-4 px-4 py-2 text-slate-200 font-bold bg-green-700 rounded-full"
+      className="mr-4 px-4 py-2 text-slate-100 font-bold bg-green-700 rounded-full"
       disabled
     >
       Wallet Connected
@@ -54,7 +51,7 @@ function WalletConnectedButton() {
   );
 }
 
-function ConnectWalletButton() {
+const ConnectWalletButton = () => {
   return (
     <button
       onClick={connectWallet}
@@ -65,4 +62,4 @@ function ConnectWalletButton() {
   );
 }
 
-export default Navbar;
+export default Topbar;

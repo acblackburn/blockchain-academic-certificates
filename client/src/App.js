@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Verify from './pages/Verify';
 import Publish from './pages/Publish';
-import Navbar from './components/Navbar';
+import Topbar from './components/Topbar';
 import Sidebar from './components/Sidebar';
 import GunTest from './pages/GunTest';
 import View from './pages/View';
@@ -37,7 +37,7 @@ function App() {
         <div class="flex bg-slate-100">
           <Sidebar />
           <div class="flex-1">
-          <Navbar account={account} isConnected={isConnected} />
+          <Topbar account={account} isConnected={isConnected} />
           <Routes>
             <Route path="/verify" element={<Verify />} />
             <Route path="/publish" element={<Publish />} />
