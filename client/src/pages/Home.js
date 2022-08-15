@@ -32,7 +32,7 @@ const Home = (props) => {
           </p>
         </div>
         <div class="h-96 p-12">
-          <h1 class="text-4xl">Are You an Institution?</h1>
+          <h1 class="text-4xl">Are You an Academic Institution?</h1>
           <p class="pt-8">
             If you're an employer looking to verify the validity of an applicants certificates, please:
           </p>
