@@ -19,27 +19,29 @@ function View(props) {
   })
 
   return (
-    <table class="table-auto">
-      <thead>
-        <tr>
-          <th>CID</th>
-          <th>Uploader</th>
-          <th>View/Download Link</th>
-        </tr>
-      </thead>
-      <tbody>
-        {CIDs.map(CID => {
-          const certificateLink = "https://blockchain-academic-certificates.infura-ipfs.io/ipfs/" + CID;
-          return (
-            <tr key={CID}>
-              <td>{CID}</td>
-              <td>Uploader Account</td>
-              <td><a href={certificateLink}>Link</a></td>
-            </tr>
-          );
-          })}
-      </tbody>
-    </table>
+    <div class="flex flex-col w-full justify-center">
+      <table class="table-auto border-collapse border drop-shadow my-8 mx-8">
+        <thead>
+          <tr>
+            <th class="bg-teal-100 border text-left px-8 py-4">IPFS Content ID (CID)</th>
+            <th class="bg-teal-100 border text-left px-8 py-4">Uploader</th>
+            <th class="bg-teal-100 border text-left px-8 py-4">View Link</th>
+          </tr>
+        </thead>
+        <tbody>
+          {CIDs.map(CID => {
+            const certificateLink = "https://blockchain-academic-certificates.infura-ipfs.io/ipfs/" + CID;
+            return (
+              <tr key={CID}>
+                <td class="bg-white border px-8 py-4">{CID}</td>
+                <td class="bg-white border px-8 py-4">Uploader Account</td>
+                <td class="bg-white border px-8 py-4 text-blue-600 font-bold hover:underline"><a href={certificateLink}>IPFS Link</a></td>
+              </tr>
+            );
+            })}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
