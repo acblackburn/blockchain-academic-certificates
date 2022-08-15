@@ -94,7 +94,7 @@ function Publish(props) {
   return (
     <div class="flex w-full">
       <div class="my-20 flex justify-center w-full">
-        <form onSubmit={handleFileUpload} class="flex flex-row w-full mx-20 p-10 justify-center bg-white drop-shadow">
+        <form onSubmit={handleFileUpload} class="flex flex-row mx-20 p-10 justify-center bg-white drop-shadow">
           <div class="flex flex-col mx-2">
             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
               File

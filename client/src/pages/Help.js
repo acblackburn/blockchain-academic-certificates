@@ -18,8 +18,8 @@ const Help = (props) => {
             </li>
           </ul>
       </div>
-      <div class="flex w-full">
-        <form class="flex flex-row w-full mx-20 p-10 justify-center bg-white drop-shadow">
+      <div class="flex w-full justify-center">
+        <form class="flex flex-row mx-20 p-10 justify-center bg-white drop-shadow">
           <div class="flex flex-col mx-2">
             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
               First Name
