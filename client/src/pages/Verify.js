@@ -70,7 +70,7 @@ function Verify(props) {
   }
 
   return (
-    <div class="my-20 flex justify-center w-full bg-slate-50">
+    <div class="my-20 flex justify-center w-full">
       <form onSubmit={verifyFile} class="w-3/5 flex flex-col justify-center bg-white shadow-md rounded px-8 py-8">
         <div class="flex justify-center">
           <input type="file" onChange={retrieveFile} ref={fileInputRef} 

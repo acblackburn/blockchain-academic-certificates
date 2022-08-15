@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 const Sidebar = (props) => {
   return (
-    <aside class="flex flex-col sticky top-0 left-0 h-screen w-24 overflow-hidden bg-teal-500">
+    <div class="flex flex-col sticky top-0 left-0 h-screen w-24 overflow-hidden bg-teal-500 shadow">
       <nav class="flex flex-col">
         <Link to="/" class="flex flex-col items-center justify-center h-20 w-full hover:bg-teal-600 transition hover:duration-100">
             HOME
@@ -20,7 +20,7 @@ const Sidebar = (props) => {
           gun-test
         </Link>
       </nav>
-    </aside>
+    </div>
   );
 }
 

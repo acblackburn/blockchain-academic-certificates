@@ -16,22 +16,10 @@ function Navbar(props) {
 
 
   return (
-    <div className="sticky w-full top-0 h-16 flex justify-between items-center bg-gray-800">
+    <div className="sticky w-full top-0 h-20 flex justify-between items-center bg-white shadow">
       <nav>
-        <Link to="/" className="ml-4 text-slate-200 font-bold">
+        <Link to="/" className="ml-8 text-slate-200 font-bold">
           blockchain-academic-certificates
-        </Link>
-        <Link to="/verify" className="ml-4 text-slate-200 font-bold">
-          verify
-        </Link>
-        <Link to="/publish" className="ml-4 text-slate-200 font-bold">
-          publish
-        </Link>
-        <Link to="/gun-test" className="ml-4 text-slate-200 font-bold">
-          gun-test
-        </Link>
-        <Link to="/view" className="ml-4 text-slate-200 font-bold">
-          view
         </Link>
       </nav>
       <div className="flex flex-row items-center h-full">
@@ -45,7 +33,7 @@ function Navbar(props) {
           </a>
         }
         {props.isConnected &&
-        <div className="h-full mr-2 py-2">
+        <div className="h-full mr-6 py-4">
           <img src={makeBlockie(props.account)} className="h-full rounded-md" alt="account blockie" />
         </div>
         }
@@ -57,7 +45,7 @@ function Navbar(props) {
 function WalletConnectedButton() {
   return (
     <button
-      className="mr-4 px-2 py-1 text-slate-200 font-bold bg-green-700 rounded-full"
+      className="mr-4 px-4 py-2 text-slate-200 font-bold bg-green-700 rounded-full"
       disabled
     >
       Wallet Connected
