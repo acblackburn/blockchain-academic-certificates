@@ -35,7 +35,9 @@ function View(props) {
               <tr key={CID}>
                 <td class="bg-white border px-8 py-4">{CID}</td>
                 <td class="bg-white border px-8 py-4">Uploader Account</td>
-                <td class="bg-white border px-8 py-4 text-blue-600 font-bold hover:underline"><a href={certificateLink}>IPFS Link</a></td>
+                <td class="bg-white border px-8 py-4 text-blue-600 font-bold hover:underline">
+                  <a href={certificateLink} target="_blank">IPFS Link</a>
+                </td>
               </tr>
             );
             })}
