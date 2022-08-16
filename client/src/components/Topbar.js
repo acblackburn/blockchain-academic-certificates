@@ -55,7 +55,7 @@ const ConnectWalletButton = () => {
   return (
     <button
       onClick={connectWallet}
-      className="mr-4 px-2 py-1 text-slate-200 font-bold bg-blue-500 rounded-full hover:bg-blue-700"
+      className="mr-6 px-4 py-2 text-slate-200 font-bold bg-blue-700 rounded-full hover:bg-blue-500"
       >
       Connect Wallet
     </button>
