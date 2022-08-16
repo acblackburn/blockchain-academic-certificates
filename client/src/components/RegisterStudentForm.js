@@ -14,9 +14,9 @@ const RegisterStudentForm = (props) => {
 
   useEffect(() => {
     if (props.account) {
-      studentAccounts.get(props.account).on((studentName, account) => {
-        if (studentName) {
-          setExistingStudentName(studentName);
+      studentAccounts.get(props.account).on((student, account) => {
+        if (student) {
+          setExistingStudentName(student.name);
         }
       });
     }
@@ -25,7 +25,8 @@ const RegisterStudentForm = (props) => {
   const handleRegisterAccount = (e) => {
     e.preventDefault();
     console.log(firstName + " " + surname);
-    studentAccounts.get(props.account).put(firstName + " " + surname);
+    const student = gun.get(props.account).put({name: firstName + " " + surname})
+    studentAccounts.set(student);
     setFirstName("");
     setSurname("");
     firstNameRef.current.value = "";
