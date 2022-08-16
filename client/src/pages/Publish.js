@@ -10,7 +10,8 @@ function Publish(props) {
 
   const [file, setFile] = useState(null);
   const [CIDs, setCIDs] = useState([]);
-  const [submitDisabled, setSubmitDisabled] = useState(true);
+  const [students, setStudents] = useState([]);
+  const [selectedStudentAccount, setSelectedStudentAccount] = useState("");
   const fileInputRef = useRef("");
   const [publishStatus, setPublishStatus] = useState(0);
 
@@ -33,6 +34,7 @@ function Publish(props) {
   // Init connection to gunDB with relay server and get certificatesData set
   const gun = Gun({peers: ['http://localhost:3001/gun']});
   const certificatesData = gun.get('certificatesData');
+  const studentAccounts = gun.get('studentAccounts');
 
   useEffect(() => {
     // Load all certificate CIDs from gunDB
@@ -41,6 +43,13 @@ function Publish(props) {
         setCIDs(CIDs.concat(CID));  
       }
     });
+
+    studentAccounts.map().once((student, _account) => {
+      if (student && !students.some(({account}) => account === _account)) {
+        setStudents(students.concat({account: _account, name: student.name}));
+      }
+    });
+
   })
 
   const retrieveFile = (e) => {
@@ -50,13 +59,11 @@ function Publish(props) {
     reader.readAsArrayBuffer(data);
     reader.onloadend = () => {
       setFile(Buffer(reader.result));
-      setSubmitDisabled(false);
     }
   }
 
   const handleFileUpload = async (e) => {
     e.preventDefault();
-    setSubmitDisabled(true);
     try {
       // Load VerifyCertificate solidity contract
       const networkId = await web3.eth.net.getId();
@@ -108,13 +115,22 @@ function Publish(props) {
               Student
             </label>
             <select
+              onChange={e => setSelectedStudentAccount(e.target.value)} value={selectedStudentAccount}
               class="bg-gray-200 border-2 border-gray-200 rounded w-full h-full py-2 px-4 text-gray-700 focus:bg-white focus:outline-none focus:border-teal-500"
             >
-              <option>University of Birmingham</option>
-              <option>Cardiff University</option>
+              {students.map(student => {
+                return (
+                  <option key={student.account} value={student.account}>
+                    {student.account.substring(0,5)}...{student.account.substring(38.42)} ({student.name})
+                  </option>
+                );
+                })}
+                <option value="" disabled selected>Select a student</option>
             </select>
           </div>
-          <input type="submit" value="Publish" disabled={submitDisabled} class="shadow mt-6 bg-teal-500 hover:bg-teal-400 disabled:bg-teal-200 focus:shadow-outline focus:outline-none text-white font-bold mx-2 py-2 px-4 rounded" />
+          <input type="submit" value="Publish" disabled={(file === null) || (selectedStudentAccount === "")} 
+            class="shadow mt-6 bg-teal-500 hover:bg-teal-400 disabled:bg-teal-200 focus:shadow-outline focus:outline-none text-white font-bold mx-2 py-2 px-4 rounded"
+          />
         </form>
       </div>
     </div>
