@@ -45,7 +45,7 @@ function App() {
             <Route path="/publish" element={<Publish account={account} />} />
             <Route path="/gun-test" element={<GunTest />} />
             <Route path="/view" element={<View account={account} />} />
-            <Route path="/help" element={<Help account={account} />} />
+            <Route path="/help" element={<Help account={account} isConnected={isConnected} />} />
             <Route path="/" element={<Home />} />
           </Routes>
           </div>

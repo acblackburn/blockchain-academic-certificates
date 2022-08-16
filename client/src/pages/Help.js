@@ -21,7 +21,7 @@ const Help = (props) => {
           </ul>
       </div>
       <div class="flex w-full justify-center">
-        <RegisterStudentForm account={props.account}/>
+        <RegisterStudentForm account={props.account} isConnected={props.isConnected} />
       </div>
     </div>
   );
