@@ -44,6 +44,7 @@ function Publish(props) {
       }
     });
 
+    // Load all students from gunDB
     studentAccounts.map().once((student, _account) => {
       if (student && !students.some(({account}) => account === _account)) {
         setStudents(students.concat({account: _account, name: student.name}));
@@ -88,7 +89,12 @@ function Publish(props) {
         await contract.methods.setRoot(newRoot).send();
 
         // Add new certificate metadata to gunDB
-        const newCertificate = gun.get(fileAdded.path).put({studentAccount: "exampleStudentAccount", uploaderAccount: "exampleUploaderAccount"});
+        const newCertificate = gun.get(fileAdded.path).put(
+          {
+            studentAccount: selectedStudentAccount,
+            uploaderAccount: props.account,
+            dateAdded: new Date().toLocaleString()
+          });
         certificatesData.set(newCertificate);
       }
     } catch (error) {
