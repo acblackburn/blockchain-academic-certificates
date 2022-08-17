@@ -4,12 +4,14 @@ import keccak256 from 'keccak256';
 import Web3 from 'web3';
 import { MerkleTree } from 'merkletreejs';
 import { create } from 'ipfs-http-client';
+import PublishedCertificatesTable from '../components/PublishedCertificatesTable';
 import VerifyCertificate from '../contracts_build/contracts/VerifyCertificate.json';
 
 function Publish(props) {
 
   const [file, setFile] = useState(null);
   const [CIDs, setCIDs] = useState([]);
+  const [certificates, setCertificates] = useState([]);
   const [students, setStudents] = useState([]);
   const [selectedStudentAccount, setSelectedStudentAccount] = useState("");
   const fileInputRef = useRef("");
@@ -41,6 +43,19 @@ function Publish(props) {
     certificatesData.map().once((node, CID) => {
       if (node && !CIDs.includes(CID)) {
         setCIDs(CIDs.concat(CID));  
+      }
+    });
+
+    // Load all connected account's published certificates' metadata from gunDB
+    certificatesData.map(certificate => certificate.uploaderAccount === props.account ? certificate : undefined).once((metadata, _CID) => {
+      if (metadata && !certificates.some(({CID}) => CID === _CID)) {
+        setCertificates(certificates.concat(
+          {
+            CID: _CID,
+            studentAccount: metadata.studentAccount,
+            dateAdded: metadata.dateAdded
+          }
+        ));
       }
     });
 
@@ -118,7 +133,7 @@ function Publish(props) {
           the transaction.
         </p>
       </div>
-      <div class="my-14 flex justify-center w-full">
+      <div class="mt-10 flex justify-center w-full">
         <form onSubmit={handleFileUpload} class="flex flex-row mx-20 p-10 justify-center bg-white drop-shadow">
           <div class="flex flex-col mx-2">
             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
@@ -151,6 +166,13 @@ function Publish(props) {
           />
         </form>
       </div>
+      <div class="mt-14 mx-20">
+        <h1 class="text-4xl">Published Certificates</h1>
+        <p class="pt-6">
+          Listing all certificates published by blockchain account: <strong>{props.account.substring(0,5)}...{props.account.substring(38.42)}</strong>
+        </p>
+      </div>
+      <PublishedCertificatesTable certificates={certificates} />
     </div>
   );
 }
