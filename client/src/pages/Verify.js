@@ -70,22 +70,40 @@ function Verify(props) {
   }
 
   return (
-    <div class="my-20 flex justify-center w-full">
-      <form onSubmit={verifyFile} class="w-3/5 flex flex-col justify-center bg-white shadow-md rounded px-8 py-8">
-        <div class="flex justify-center">
-          <input type="file" onChange={retrieveFile} ref={fileInputRef} 
-          class="bg-gray-200 border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-indigo-600"
-          />
-          <input type="submit" value="Verify" disabled={submitDisabled} class="shadow bg-indigo-600 hover:bg-indigo-400 disabled:bg-indigo-400 focus:shadow-outline focus:outline-none text-white font-bold mx-5 py-2 px-4 rounded" />
-        </div>
-        {verifiedStatus !== 0 &&
-          <div>
-            {verifiedStatus ? 
-              <h2 class="flex justify-center text-xl text-green-600 font-bold mt-5">Certificate has been verified as real</h2>
-              : 
-              <h2 class="flex justify-center text-xl text-red-600 font-bold mt-5">Certificate has been verified as fake</h2>}
-          </div>}
-      </form>
+    <div class="flex flex-col w-full justify-center">
+      <div class="mt-14 mx-20">
+        <h1 class="text-4xl">Verify a Certificate</h1>
+        <p class="pt-6">
+          If you're an employer and an applicant has provided you with a Higher Education certificate such as
+          a Degree Certificate or Transcript, please use the form below to verify its authenticity.
+        </p>
+        <p class="pt-6">
+        Simply select the file for the form below and click <strong>Verify</strong>. This will check the file
+        details against the blockchain to validate its authenticity!
+        </p>
+      </div>
+      <div class="flex justify-center w-full mt-10">
+        <form onSubmit={verifyFile} class="flex flex-col mx-20 p-10 justify-center bg-white drop-shadow">
+          <div class="flex justify-center">
+            <div class="flex flex-col mx-2">
+              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                File
+              </label>
+              <input type="file" onChange={retrieveFile} ref={fileInputRef} 
+              class="bg-gray-200 border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-teal-500"
+              />
+            </div>
+            <input type="submit" value="Verify" disabled={submitDisabled} class="shadow mt-6 bg-teal-500 hover:bg-teal-400 disabled:bg-teal-200 focus:shadow-outline focus:outline-none text-white font-bold mx-2 py-2 px-4 rounded" />
+          </div>
+          {verifiedStatus !== 0 &&
+            <div>
+              {verifiedStatus ? 
+                <h2 class="flex justify-center text-xl text-green-600 font-bold mt-5">Certificate has been verified as real</h2>
+                : 
+                <h2 class="flex justify-center text-xl text-red-600 font-bold mt-5">Certificate has been verified as fake</h2>}
+            </div>}
+        </form>
+      </div>
     </div>
   );
 }
