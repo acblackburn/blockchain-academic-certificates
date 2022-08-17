@@ -24,11 +24,11 @@ const Home = (props) => {
         <div class="h-96 p-12 border-b-2">
           <h1 class="text-4xl">Are You a Student?</h1>
           <p class="pt-8">
-            If you're already set up, visit the <Link to="verify" class="text-blue-600 font-bold hover:underline">View</Link> section to see and/or
+            If you're already set up, visit the <Link to="view" class="text-blue-600 font-bold hover:underline">View</Link> section to see and/or
             download all of your published certificates.
           </p>
           <p class="pt-6">
-            Otherwise, please see the <a class="text-blue-600 font-bold hover:underline">New Student</a> section of the help page to register your wallet.
+            Otherwise, please see the <Link to="help" class="text-blue-600 font-bold hover:underline">New Student</Link> section of the help page to register your wallet.
           </p>
         </div>
         <div class="h-96 p-12">
