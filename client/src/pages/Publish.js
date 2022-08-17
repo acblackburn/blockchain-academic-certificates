@@ -105,8 +105,20 @@ function Publish(props) {
   }
 
   return (
-    <div class="flex w-full">
-      <div class="my-20 flex justify-center w-full">
+    <div class="flex flex-col w-full justify-center">
+      <div class="mt-14 mx-20">
+        <h1 class="text-4xl">Publish a New Certificate</h1>
+        <p class="pt-6">
+          Simply select the certificate file and associated student from the form below and
+          click <strong>submit</strong> to publish the certificate to the blockchain!
+        </p>
+        <p class="pt-6 font-bold">
+          PLEASE NOTE: Your connected blockchain account WILL be charged gas fees when publishing.
+          MetaMask will preview the cost to you upon publishing, at which point you can finalise
+          the transaction.
+        </p>
+      </div>
+      <div class="my-14 flex justify-center w-full">
         <form onSubmit={handleFileUpload} class="flex flex-row mx-20 p-10 justify-center bg-white drop-shadow">
           <div class="flex flex-col mx-2">
             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
