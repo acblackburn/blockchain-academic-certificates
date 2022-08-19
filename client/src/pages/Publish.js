@@ -140,7 +140,7 @@ function Publish(props) {
               File
             </label>
             <input type="file" onChange={retrieveFile} ref={fileInputRef}
-              class="bg-gray-200 border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-teal-500"
+              class="bg-gray-200 border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-violet-500"
               />
           </div>
           <div class="flex flex-col mx-2">
@@ -149,7 +149,7 @@ function Publish(props) {
             </label>
             <select
               onChange={e => setSelectedStudentAccount(e.target.value)} value={selectedStudentAccount}
-              class="bg-gray-200 border-2 border-gray-200 rounded w-full h-full py-2 px-4 text-gray-700 focus:bg-white focus:outline-none focus:border-teal-500"
+              class="bg-gray-200 border-2 border-gray-200 rounded w-full h-full py-2 px-4 text-gray-700 focus:bg-white focus:outline-none focus:border-violet-500"
             >
               {students.map(student => {
                 return (
@@ -162,7 +162,7 @@ function Publish(props) {
             </select>
           </div>
           <input type="submit" value="Publish" disabled={(file === null) || (selectedStudentAccount === "")} 
-            class="shadow mt-6 bg-teal-500 hover:bg-teal-400 disabled:bg-teal-200 focus:shadow-outline focus:outline-none text-white font-bold mx-2 py-2 px-4 rounded"
+            class="shadow mt-6 bg-violet-500 hover:bg-violet-400 disabled:bg-violet-200 focus:shadow-outline focus:outline-none text-white font-bold mx-2 py-2 px-4 rounded"
           />
         </form>
       </div>

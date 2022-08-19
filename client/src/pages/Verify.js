@@ -90,10 +90,10 @@ function Verify(props) {
                 File
               </label>
               <input type="file" onChange={retrieveFile} ref={fileInputRef} 
-              class="bg-gray-200 border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-teal-500"
+              class="bg-gray-200 border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-violet-500"
               />
             </div>
-            <input type="submit" value="Verify" disabled={submitDisabled} class="shadow mt-6 bg-teal-500 hover:bg-teal-400 disabled:bg-teal-200 focus:shadow-outline focus:outline-none text-white font-bold mx-2 py-2 px-4 rounded" />
+            <input type="submit" value="Verify" disabled={submitDisabled} class="shadow mt-6 bg-violet-500 hover:bg-violet-400 disabled:bg-violet-200 focus:shadow-outline focus:outline-none text-white font-bold mx-2 py-2 px-4 rounded" />
           </div>
           {verifiedStatus !== 0 &&
             <div>

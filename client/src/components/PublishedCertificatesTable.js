@@ -3,10 +3,10 @@ const PublishedCertificatesTable = (props) => {
     <table class="table-auto border-collapse border drop-shadow my-10 mx-20">
       <thead>
         <tr>
-          <th class="bg-teal-100 border text-left px-8 py-4">IPFS Content ID (CID)</th>
-          <th class="bg-teal-100 border text-left px-8 py-4">Student</th>
-          <th class="bg-teal-100 border text-left px-8 py-4">Date Added</th>
-          <th class="bg-teal-100 border text-left px-8 py-4">View Link</th>
+          <th class="bg-violet-500 border text-white text-left px-8 py-4">IPFS Content ID (CID)</th>
+          <th class="bg-violet-500 border text-white text-left px-8 py-4">Student</th>
+          <th class="bg-violet-500 border text-white text-left px-8 py-4">Date Added</th>
+          <th class="bg-violet-500 border text-white text-left px-8 py-4">View Link</th>
         </tr>
       </thead>
       <tbody>
