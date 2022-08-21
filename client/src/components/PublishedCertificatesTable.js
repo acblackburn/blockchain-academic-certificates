@@ -7,6 +7,7 @@ const PublishedCertificatesTable = (props) => {
           <th class="bg-violet-500 border text-white text-left px-8 py-4">Student</th>
           <th class="bg-violet-500 border text-white text-left px-8 py-4">Date Added</th>
           <th class="bg-violet-500 border text-white text-left px-8 py-4">View Link</th>
+          <th class="bg-violet-500 border text-white text-left px-8 py-4">Delete</th>
         </tr>
       </thead>
       <tbody>
@@ -25,6 +26,9 @@ const PublishedCertificatesTable = (props) => {
               </td>
               <td class="bg-white border px-8 py-4 text-blue-600 font-bold hover:underline">
                 <a href={certificateLink} target="_blank">IPFS Link</a>
+              </td>
+              <td class="bg-white border px-8 py-4 items-center">
+                <button onClick={() => props.removeCertificate(certificate.CID)} class="text-red-600 font-bold hover:underline">X</button>
               </td>
             </tr>
           );

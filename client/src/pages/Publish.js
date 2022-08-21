@@ -47,7 +47,14 @@ function Publish(props) {
     });
 
     // Load all connected account's published certificates' metadata from gunDB
-    certificatesData.map(certificate => certificate.uploaderAccount === props.account ? certificate : undefined).once((metadata, _CID) => {
+    certificatesData.map(certificate => {
+      if (certificate) {
+        if (certificate.uploaderAccount === props.account) {
+          return certificate;
+        }
+      }
+      return undefined;
+    }).once((metadata, _CID) => {
       if (metadata && !certificates.some(({CID}) => CID === _CID)) {
         setCertificates(certificates.concat(
           {
@@ -119,6 +126,41 @@ function Publish(props) {
     fileInputRef.current.value = "";
   }
 
+  const removeCertificate = async (CIDToDelete) => {
+    try {
+      // Load VerifyCertificate solidity contract
+      const networkId = await web3.eth.net.getId();
+      const networkData = VerifyCertificate.networks[networkId];
+      const contract = new web3.eth.Contract(VerifyCertificate.abi, networkData.address, { from: window.ethereum.selectedAddress });
+
+      // Create leaves array excluding CID to be deleted
+      const updatedCIDs = CIDs.filter(CID => CID !== CIDToDelete);
+      const leaves = updatedCIDs.map(leaf => keccak256(leaf));
+
+      // Create merkle tree using leaves array
+      const merkleTree = new MerkleTree(leaves, keccak256, { sort: true });
+
+      // Get the new merkle root and call the set method from the smart contract to save to the blockchain
+      const newRoot = merkleTree.getHexRoot();
+      await contract.methods.setRoot(newRoot).send();
+
+      // remove CID from gun.js 
+      certificatesData.get(CIDToDelete).put(null);
+
+      // Remove CID from CIDs array in state
+      setCIDs(CIDs.filter(CID => CID !== CIDToDelete));
+
+      // Remove certificate from certificates array in state
+      setCertificates(certificates.filter(certificate => certificate.CID !== CIDToDelete));
+  
+      // unpin from IPFS client
+      await client.pin.rm(CIDToDelete);
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div class="flex flex-col w-full justify-center">
       <div class="mt-14 mx-20">
@@ -172,7 +214,7 @@ function Publish(props) {
           Listing all certificates published by blockchain account: <strong>{props.account.substring(0,5)}...{props.account.substring(38.42)}</strong>
         </p>
       </div>
-      <PublishedCertificatesTable certificates={certificates} />
+      <PublishedCertificatesTable certificates={certificates} removeCertificate={removeCertificate} />
     </div>
   );
 }
