@@ -12,7 +12,14 @@ function View(props) {
 
   useEffect(() => {
     // Load all certificates for connected blockchain account from gunDB
-    certificatesData.map(certificate => certificate.studentAccount === props.account ? certificate : undefined).once((metadata, _CID) => {
+    certificatesData.map(certificate => {
+      if (certificate) {
+        if (certificate.studentAccount === props.account) {
+          return certificate;
+        }
+      }
+      return undefined;
+    }).once((metadata, _CID) => {
       if (metadata && !certificates.some(({CID}) => CID === _CID)) {
         setCertificates(certificates.concat(
           {
