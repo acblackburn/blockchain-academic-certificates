@@ -9,6 +9,7 @@ import VerifyCertificate from '../contracts_build/contracts/VerifyCertificate.js
 
 function Publish(props) {
 
+  const [canPublish, setCanPublish] = useState(false);
   const [file, setFile] = useState(null);
   const [CIDs, setCIDs] = useState([]);
   const [certificates, setCertificates] = useState([]);
@@ -39,6 +40,21 @@ function Publish(props) {
   const studentAccounts = gun.get('studentAccounts');
 
   useEffect(() => {
+    // Check if account has smart contract publishing rights
+    const canPublish = async () => {
+      // Load VerifyCertificate solidity contract
+      const networkId = await web3.eth.net.getId();
+      const networkData = VerifyCertificate.networks[networkId];
+      const contract = new web3.eth.Contract(VerifyCertificate.abi, networkData.address, { from: window.ethereum.selectedAddress });
+
+      // Call inherited hasRole method from AccessControl OpenZeppelin smart contract
+      const role = "0x" + keccak256("PUBLISHER_ROLE").toString('hex');
+      console.log(role);
+      setCanPublish(await contract.methods.hasRole(role, props.account).call());
+      console.log(canPublish.current);
+    }
+    canPublish();
+
     // Load all certificate CIDs from gunDB
     certificatesData.map().once((node, CID) => {
       if (node && !CIDs.includes(CID)) {
@@ -73,7 +89,7 @@ function Publish(props) {
       }
     });
 
-  })
+  }, [])
 
   const retrieveFile = (e) => {
     e.preventDefault();
@@ -161,62 +177,85 @@ function Publish(props) {
     }
   }
 
-  return (
-    <div class="flex flex-col w-full justify-center">
-      <div class="mt-14 mx-20">
-        <h1 class="text-4xl">Publish a New Certificate</h1>
-        <p class="pt-6">
-          Simply select the certificate file and associated student from the form below and
-          click <strong>submit</strong> to publish the certificate to the blockchain!
-        </p>
-        <p class="pt-6 font-bold">
-          PLEASE NOTE: Your connected blockchain account WILL be charged gas fees when publishing.
-          MetaMask will preview the cost to you upon publishing, at which point you can finalise
-          the transaction.
-        </p>
+  if (canPublish) {
+    return (
+      <div class="flex flex-col w-full justify-center">
+        <div class="mt-14 mx-20">
+          <h1 class="text-4xl">Publish a New Certificate</h1>
+          <p class="pt-6">
+            Simply select the certificate file and associated student from the form below and
+            click <strong>submit</strong> to publish the certificate to the blockchain!
+          </p>
+          <p class="pt-6 font-bold">
+            PLEASE NOTE: Your connected blockchain account WILL be charged gas fees when publishing.
+            MetaMask will preview the cost to you upon publishing, at which point you can finalise
+            the transaction.
+          </p>
+        </div>
+        <div class="mt-10 flex justify-center w-full">
+          <form onSubmit={handleFileUpload} class="flex flex-row mx-20 p-10 justify-center bg-white drop-shadow">
+            <div class="flex flex-col mx-2">
+              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                File
+              </label>
+              <input type="file" onChange={retrieveFile} ref={fileInputRef}
+                class="bg-gray-200 border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-violet-500"
+                />
+            </div>
+            <div class="flex flex-col mx-2">
+              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                Student
+              </label>
+              <select
+                onChange={e => setSelectedStudentAccount(e.target.value)} value={selectedStudentAccount}
+                class="bg-gray-200 border-2 border-gray-200 rounded w-full h-full py-2 px-4 text-gray-700 focus:bg-white focus:outline-none focus:border-violet-500"
+              >
+                {students.map(student => {
+                  return (
+                    <option key={student.account} value={student.account}>
+                      {student.account.substring(0,5)}...{student.account.substring(38.42)} ({student.name})
+                    </option>
+                  );
+                  })}
+                  <option value="" disabled selected>Select a student</option>
+              </select>
+            </div>
+            <input type="submit" value="Publish" disabled={(file === null) || (selectedStudentAccount === "")} 
+              class="shadow mt-6 bg-violet-500 hover:bg-violet-400 disabled:bg-violet-200 focus:shadow-outline focus:outline-none text-white font-bold mx-2 py-2 px-4 rounded"
+            />
+          </form>
+        </div>
+        <div class="mt-14 mx-20">
+          <h1 class="text-4xl">Published Certificates</h1>
+          <p class="pt-6">
+            Listing all certificates published by blockchain account: <strong>{props.account.substring(0,5)}...{props.account.substring(38.42)}</strong>
+          </p>
+        </div>
+        <PublishedCertificatesTable certificates={certificates} removeCertificate={removeCertificate} />
       </div>
-      <div class="mt-10 flex justify-center w-full">
-        <form onSubmit={handleFileUpload} class="flex flex-row mx-20 p-10 justify-center bg-white drop-shadow">
-          <div class="flex flex-col mx-2">
-            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-              File
-            </label>
-            <input type="file" onChange={retrieveFile} ref={fileInputRef}
-              class="bg-gray-200 border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-violet-500"
-              />
-          </div>
-          <div class="flex flex-col mx-2">
-            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-              Student
-            </label>
-            <select
-              onChange={e => setSelectedStudentAccount(e.target.value)} value={selectedStudentAccount}
-              class="bg-gray-200 border-2 border-gray-200 rounded w-full h-full py-2 px-4 text-gray-700 focus:bg-white focus:outline-none focus:border-violet-500"
-            >
-              {students.map(student => {
-                return (
-                  <option key={student.account} value={student.account}>
-                    {student.account.substring(0,5)}...{student.account.substring(38.42)} ({student.name})
-                  </option>
-                );
-                })}
-                <option value="" disabled selected>Select a student</option>
-            </select>
-          </div>
-          <input type="submit" value="Publish" disabled={(file === null) || (selectedStudentAccount === "")} 
-            class="shadow mt-6 bg-violet-500 hover:bg-violet-400 disabled:bg-violet-200 focus:shadow-outline focus:outline-none text-white font-bold mx-2 py-2 px-4 rounded"
-          />
-        </form>
+    );
+  } else {
+    return (
+      <div class="flex flex-col w-full justify-center">
+        <div class="mt-14 mx-20">
+          <h1 class="text-4xl">Publish a New Certificate</h1>
+          <p class="pt-6 text-lg text-red-600">
+            Blockchain account: <strong>{props.account.substring(0,5)}...{props.account.substring(38.42)}</strong> does not have permission to publish new certificates.
+          </p>
+          <p class="pt-6 text-lg font-bold">
+            If you are a new institution, please contact one of the current institutions to enquire about joining this decentralised application.
+          </p>
+          <p class="pt-6 text-lg">
+            Institutions currently using this application include:
+            <ul>
+              <li class="my-4 list-disc">University of Birmingham</li>
+            </ul>
+          </p>
+        </div>
       </div>
-      <div class="mt-14 mx-20">
-        <h1 class="text-4xl">Published Certificates</h1>
-        <p class="pt-6">
-          Listing all certificates published by blockchain account: <strong>{props.account.substring(0,5)}...{props.account.substring(38.42)}</strong>
-        </p>
-      </div>
-      <PublishedCertificatesTable certificates={certificates} removeCertificate={removeCertificate} />
-    </div>
-  );
+    );
+  }
+  
 }
 
 export default Publish;
