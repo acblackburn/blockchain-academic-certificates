@@ -5,6 +5,7 @@ import Web3 from 'web3';
 import { MerkleTree } from 'merkletreejs';
 import { create } from 'ipfs-http-client';
 import PublishedCertificatesTable from '../components/PublishedCertificatesTable';
+import NewPublisherForm from '../components/NewPublisherForm';
 import VerifyCertificate from '../contracts_build/contracts/VerifyCertificate.json';
 
 function Publish(props) {
@@ -16,7 +17,6 @@ function Publish(props) {
   const [students, setStudents] = useState([]);
   const [selectedStudentAccount, setSelectedStudentAccount] = useState("");
   const fileInputRef = useRef("");
-  const [publishStatus, setPublishStatus] = useState(0);
 
   // create ETH web3 object
   const web3 = new Web3(Web3.givenProvider);
@@ -232,6 +232,18 @@ function Publish(props) {
           </p>
         </div>
         <PublishedCertificatesTable certificates={certificates} removeCertificate={removeCertificate} />
+        <div class="mt-14 mx-20">
+          <h1 class="text-4xl">Grant Publishing Permissions to New Blockchain Account</h1>
+          <p class="pt-6">
+            Use this form to grant publishing permissions to new blockchain accounts. <strong>Please note: This action should only be performed once you 
+            have confirmed the account with the new institution.</strong>
+          </p>
+          <p class="pt-6 font-bold text-red-600">
+            WARNING: Granting this permission will allow the new account to modify data on the blockchain, as well and grant permissions to new accounts.
+            Only grant permissions to accounts that are fully trusted.
+          </p>
+        </div>
+        <NewPublisherForm web3={web3}/>
       </div>
     );
   } else {

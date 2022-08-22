@@ -15,7 +15,7 @@ const Topbar = (props) => {
 
 
   return (
-    <div className="sticky w-full top-0 h-20 flex justify-between items-center bg-white shadow">
+    <div className="sticky w-full top-0 h-20 flex justify-between items-center bg-white shadow z-50">
       <h1 className="ml-8 text-slate-500 font-bold">
         blockchain-academic-certificates
       </h1>
