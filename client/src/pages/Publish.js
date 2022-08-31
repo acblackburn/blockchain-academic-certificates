@@ -89,7 +89,7 @@ function Publish(props) {
       }
     });
 
-  }, [])
+  })
 
   const retrieveFile = (e) => {
     e.preventDefault();
