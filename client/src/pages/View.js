@@ -40,7 +40,7 @@ function View(props) {
         </p>
         <p class="pt-6">
           If you are a student and wish to register this blockchain account in order to view your certificates, 
-          please visit the <Link to="help" class="text-blue-600 font-bold hover:underline">New Student</Link> section
+          please visit the <Link to="/help" class="text-blue-600 font-bold hover:underline">New Student</Link> section
           of the help page to register your wallet.
         </p>
       </div>
