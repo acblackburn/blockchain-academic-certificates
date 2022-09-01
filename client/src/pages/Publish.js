@@ -8,7 +8,7 @@ import PublishedCertificatesTable from '../components/PublishedCertificatesTable
 import NewPublisherForm from '../components/NewPublisherForm';
 import VerifyCertificate from '../contracts_build/contracts/VerifyCertificate.json';
 
-function Publish(props) {
+const Publish = (props) => {
 
   const [canPublish, setCanPublish] = useState(false);
   const [file, setFile] = useState(null);
