@@ -6,7 +6,7 @@ import Web3 from 'web3';
 import VerifyCertificate from '../contracts_build/contracts/VerifyCertificate.json';
 const Hash = require('ipfs-only-hash');
 
-function Verify(props) {
+const Verify = (props) => {
 
   const [file, setFile] = useState(null);
   const [CIDs, setCIDs] = useState([]);
