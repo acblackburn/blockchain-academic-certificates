@@ -41,10 +41,10 @@ function App() {
           <div class="flex-1">
           <Topbar account={account} isConnected={isConnected} />
           <Routes>
-            <Route path="/verify" element={<Verify />} />
-            <Route path="/publish" element={<Publish account={account} />} />
+            <Route path="/verify" element={isConnected ? <Verify /> : <NoWalletConnected />} />
+            <Route path="/publish" element={isConnected ? <Publish account={account} /> : <NoWalletConnected />} />
             <Route path="/gun-test" element={<GunTest />} />
-            <Route path="/view" element={<View account={account} />} />
+            <Route path="/view" element={isConnected ? <View account={account} /> : <NoWalletConnected />} />
             <Route path="/help" element={<Help account={account} isConnected={isConnected} />} />
             <Route path="/" element={<Home />} />
           </Routes>
@@ -52,6 +52,14 @@ function App() {
         </div>
       </BrowserRouter>
   );
+}
+
+const NoWalletConnected = (props) => {
+  return (
+    <div>
+      No wallet connected.
+    </div>
+  )
 }
 
 export default App;
