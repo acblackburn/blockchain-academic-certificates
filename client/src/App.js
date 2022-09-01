@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Home from './pages/Home';
 import Verify from './pages/Verify';
 import Publish from './pages/Publish';
@@ -56,8 +56,16 @@ function App() {
 
 const NoWalletConnected = (props) => {
   return (
-    <div>
-      No wallet connected.
+    <div class="flex flex-col w-full justify-center">
+      <div class="mt-14 mx-20">
+        <h1 class="text-4xl">No Wallet Connected</h1>
+        <p class="pt-6 text-xl">
+          Please return to the <Link to="/" class="text-blue-600 font-bold hover:underline">Home Page</Link> for information on how to set up a MetaMask wallet.
+        </p>
+        <p class="pt-6 text-xl">
+          If you already have a MetaMask account, please click the <strong>Connect Wallet</strong> button in the top right
+        </p>
+      </div>
     </div>
   )
 }
