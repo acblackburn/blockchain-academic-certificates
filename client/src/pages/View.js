@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Gun from 'gun';
 import { Link } from 'react-router-dom';
 
-function View(props) {
+const View = (props) => {
 
   const [certificates, setCertificates] = useState([]);
 
